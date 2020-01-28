@@ -53,8 +53,8 @@ def MASS(time_series, query):
     m = query.shape[0]   
     query_mean = np.mean(query)                                   #Query mean (scalar)
     query_std = np.std(query)                                     #Query standard deviation (scalar)
-    time_series_mean = pd.rolling_mean(time_series,m)             #Time series rolling mean; window is the length of the query
-    time_series_std = pd.rolling_std(time_series,m,ddof=0)        #Time series rolling standard deviation; window is the length of the query. No degrees of freedom correction.
+    time_series_mean = time_series.rolling(m).mean()             #Time series rolling mean; window is the length of the query
+    time_series_std = time_series.rolling(m).std()        #Time series rolling standard deviation; window is the length of the query. No degrees of freedom correction.
     dot_product = sliding_dot_product(time_series, query)
     distances = 2 * (m - (dot_product[m-1:n] - m * query_mean * time_series_mean[m-1:n]) / (query_std * time_series_std[m-1:n]))
     distances = np.sqrt(distances + 0j)                           #Normalised Euclidean distance. See page 4 of http://www.cs.ucr.edu/~eamonn/PID4481997_extend_Matrix%20Profile_I.pdf
